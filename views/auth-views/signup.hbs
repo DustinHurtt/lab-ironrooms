@@ -1,1 +1,35 @@
-<h1>Signup</h1>
+<h1>Sign Up</h1>
+<form action="/auth/signup" method="post">
+    
+    <div>
+        <label for="fullNameInput">Full Name</label>
+    </div>
+
+    <div>
+        <input type="fullName" name="fullName" id="fullNameInput" />
+    </div>
+
+    <div>
+        <label for="emailInput">Email</label>
+    </div>
+
+    <div>
+        <input type="email" name="email" id="emailInput" />
+    </div>
+    {{!-- name is the key-value pair --}}
+
+    <div>
+        <label for="passwordInput">Password</label>
+    </div>
+
+    <div>
+        <input type="password" name="password" id="passwordInput" />
+    </div>
+
+    <button type="submit">Sign Up</button>
+</form>
+
+{{#if message}}
+
+<p>{{message}}</p>
+{{/if}}

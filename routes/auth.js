@@ -5,7 +5,7 @@ const User = require('../models/User.model')
 
 const bcryptjs = require('bcryptjs')
 
-const salt = 10
+const saltRounds = 10
 
 
 router.get('/login', (req, res, next) => {
@@ -13,16 +13,51 @@ router.get('/login', (req, res, next) => {
 })
 
 router.post('/login', (req, res, next) => {
+
+
     
 })
 
 router.get('/signup', (req, res, next) => {
-
+    res.render('auth-views/signup')
 })
 
 
 router.post('/signup', (req, res, next) => {
-    
+
+    if (!req.body.fullName || !req.body.email || !req.body.password)
+    {
+        res.render('auth-views/signup', {message: "You must fill out all fields"})
+        return;
+    }
+
+    const salt = bcryptjs.genSaltSync(saltRounds)
+    const hashedPass = bcryptjs.hashSync(req.body.password, salt)
+
+
+    User.findOne({email: req.body.email})
+        .then((foundUser) => {
+            if (foundUser){
+            res.render('auth-views/signup', {message: "You have already signed up"})
+            return;} 
+            else {
+                User.create({
+                    fullName: req.body.fullName,
+                    email: req.body.email,
+                    password: hashedPass
+                })
+                .then(() => {
+                    res.redirect('/auth/login')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
 })
 
 
