@@ -27,7 +27,7 @@ router.post('/login', (req, res, next) => {
             let correctPassword = bcryptjs.compareSync(req.body.password, foundUser.password);
             if(correctPassword) {
                 req.session.user = foundUser;
-                res.redirect('/')
+                res.render('index', {message: "You have logged in"})
             } else {
                 res.render('auth-views/login', {message: "Incorrect Password or Email"})
             }
@@ -79,7 +79,8 @@ router.post('/signup', (req, res, next) => {
 
 
 router.get('/logout', (req, res, next) => {
-
+    req.session.destroy()
+    res.render('auth-views/login', {message: "You have logged out"})
 })
 
 module.exports = router
