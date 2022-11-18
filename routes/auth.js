@@ -15,20 +15,21 @@ router.get('/login', (req, res, next) => {
 router.post('/login', (req, res, next) => {
 
     if (!req.body.email|| !req.body.password) {
-        res.render('login', {message : "Both fields are required"})
+        res.render('auth-views/login', {message : "Both fields are required"})
+        return;
     } 
     
     User.findOne({email: req.body.email})
     .then((foundUser) => {
         if (!foundUser) {
-            res.render('auth-views/login', {message: "This Username does not exist"})
+            res.render('auth-views/login', {message: "This User does not exist"})
         } else {
-            let correctPassword = bcrypt.compareSync(req.body.password, foundUser.password);
+            let correctPassword = bcryptjs.compareSync(req.body.password, foundUser.password);
             if(correctPassword) {
                 req.session.user = foundUser;
-                res.render('index', {message: "You have logged in"})
+                res.redirect('/')
             } else {
-                res.render('auht-views/login', {message: "Incorrect Password"})
+                res.render('auth-views/login', {message: "Incorrect Password or Email"})
             }
         }
     })    
