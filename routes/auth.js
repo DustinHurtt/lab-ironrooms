@@ -14,8 +14,24 @@ router.get('/login', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
 
-
+    if (!req.body.email|| !req.body.password) {
+        res.render('login', {message : "Both fields are required"})
+    } 
     
+    User.findOne({email: req.body.email})
+    .then((foundUser) => {
+        if (!foundUser) {
+            res.render('auth-views/login', {message: "This Username does not exist"})
+        } else {
+            let correctPassword = bcrypt.compareSync(req.body.password, foundUser.password);
+            if(correctPassword) {
+                req.session.user = foundUser;
+                res.render('index', {message: "You have logged in"})
+            } else {
+                res.render('auht-views/login', {message: "Incorrect Password"})
+            }
+        }
+    })    
 })
 
 router.get('/signup', (req, res, next) => {
@@ -39,8 +55,8 @@ router.post('/signup', (req, res, next) => {
         .then((foundUser) => {
             if (foundUser){
             res.render('auth-views/signup', {message: "You have already signed up"})
-            return;} 
-            else {
+            return
+        } else {
                 User.create({
                     fullName: req.body.fullName,
                     email: req.body.email,
