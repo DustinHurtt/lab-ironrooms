@@ -28,6 +28,12 @@ router.post('/create-room', isLoggedIn, (req, res, next) => {
 
 router.get('/rooms-list', (req, res, next) => {
     Room.find()
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "user",
+      },
+    })
     .then((foundRooms) => {
         res.render('room-views/all-rooms.hbs', {foundRooms})
     })
@@ -59,12 +65,14 @@ router.get('/:id/edit-room', isOwner, (req, res, next) => {
 })
 
 router.post('/:id/edit-room', isOwner, (req, res, next) => {
-  Room.findByIdAndUpdate(req.params.id, {
+  Room.findByIdAndUpdate(
+    req.params.id, 
+    {
     name: req.body.name,
     description: req.body.description,
     imageUrl: req.body.imageUrl
-  },
-  {new: true}
+    },
+    {new: true}
   )
   .then((updatedRoom) => {
     console.log("Changed room:", updatedRoom)

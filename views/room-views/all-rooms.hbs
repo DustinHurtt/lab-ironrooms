@@ -7,6 +7,16 @@
     <p>{{description}}</p>
     <img src="{{imageUrl}}" alt="room image">
 
+    {{#each reviews}}
+        <h4>{{user.fullName}}</h4>
+        <p>- {{comment}}</p>
+        <br>
+    {{/each}}
+
+    <form action="/reviews/{{_id}}/add-reviews" method="get">
+        <button>Add Review</button>
+    </form>
+
     <form action="/rooms/{{_id}}/edit-room" method="get">
         <button type="submit">Edit</button>
     </form>
