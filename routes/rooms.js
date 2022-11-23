@@ -40,12 +40,41 @@ router.post('/:id/delete-room', isOwner, (req, res, next) => {
     Room.findById(req.params.id)
         .then((foundRoom) => {
             foundRoom.delete()
-            res.redirect('/rooms-list')
+            res.redirect('/rooms/rooms-list')
         })
         .catch((err) => {
             console.log(err)
         })
 });
+
+router.get('/:id/edit-room', isOwner, (req, res, next) => {
+    Room.findById(req.params.id)
+      .then((foundRoom) => {
+        console.log("THIS IS THE ROOM I WANT TO EDIT", foundRoom)
+        res.render('room-views/edit-room.hbs', foundRoom)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+})
+
+router.post('/:id/edit-room', isOwner, (req, res, next) => {
+  Room.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    description: req.body.description,
+    imageUrl: req.body.imageUrl
+  },
+  {new: true}
+  )
+  .then((updatedRoom) => {
+    console.log("Changed room:", updatedRoom)
+    res.redirect('/rooms/rooms-list')
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+
+})
 
 
 
