@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 
 const isLoggedIn = require('../middleware/isLoggedIn')
+const isOwner = require('../middleware/isOwner')
 
 const Room = require('../models/Room.model')
 
@@ -34,6 +35,22 @@ router.get('/rooms-list', (req, res, next) => {
         console.log(err)
     })
 })
+
+router.post('/:id/delete-room', isOwner, (req, res, next) => {
+    Room.findById(req.params.id)
+        .then((foundRoom) => {
+            foundRoom.delete()
+            res.redirect('/rooms-list')
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+});
+
+
+
+
+
 
 
 

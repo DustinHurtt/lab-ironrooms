@@ -1,0 +1,27 @@
+<h2> Room List </h2>
+<a href="/rooms/createroom">ADD ROOM</a>
+<div id="listofrooms">
+  {{#each myRooms}}
+    <div class="listedRoom">
+      <div>
+        <h3>{{name}}</h3>
+        <p>{{owner}}</p>
+        <p>{{description}}</p>
+        {{!-- <img src="{{imageUrl}}" alt=""> --}}
+        <form action=""></form>
+      </div>
+      <div>
+        {{#if isMyRoom}}
+          <form action="/rooms/{{name}}/delete" method="post">
+            <button type="submit"> delete</button>
+
+          </form>
+          <form action="">
+            <button type="button"> edit</button>
+          </form>
+
+        {{/if}}
+      </div>
+    </div>
+  {{/each}}
+</div>

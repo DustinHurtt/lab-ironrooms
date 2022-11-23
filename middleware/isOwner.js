@@ -6,7 +6,7 @@ const isOwner = (req, res, next) => {
         if (String(foundRoom.owner) === req.session.user._id) {
             next()
         } else {
-            res.redirect('/rooms/rooms-list')
+            res.render('room-views/all-rooms.hbs', {message: "You don't have permission."})
         }
     })
     .catch((err) => {
