@@ -12,6 +12,12 @@ require("./config/session.config")(app);
 
 require('dotenv/config');
 
+app.use(function(req, res, next){
+  res.locals.user = req.session.user;
+  console.log(res.locals.session);
+  next();
+});
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

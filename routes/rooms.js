@@ -35,6 +35,7 @@ router.get('/rooms-list', (req, res, next) => {
       },
     })
     .then((foundRooms) => {
+      console.log("THESE ARE THE FOUND ROOMS: ", foundRooms)
         res.render('room-views/all-rooms.hbs', {foundRooms})
     })
     .catch((err) => {
